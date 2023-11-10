@@ -1,7 +1,17 @@
-from exif import Image
-from datetime import datetime
-import cv2
-import math
+'''
+Lo script è diviso come tutti i software in tre parti:
+- importazione delle librerie necessarie
+- implementazione delle funzionalità utili all'ìalgoritmo principale
+- algoritmo principale
+
+
+'''
+
+
+from exif import Image  # modulo utile all'uso delle informazioni nascoste nei file immagini
+from datetime import datetime # modulo utile alla manipolazione di date e orari
+import cv2 # modulo necessario per la computer vision
+import math # libreria di funzioni matematiche
 
 
 # get_time(image) preleva dai dati exif della singola foto la sua data di creazione
