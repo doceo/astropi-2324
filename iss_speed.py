@@ -194,23 +194,28 @@ image_2 = 'photo_0684.JPG'
 #prima viene richiamata la funzione get_image, il suo output viene stampato a monitor
 print(get_time(image_1))
 
-
+vel = []
 time_difference = get_time_difference(image_1, image_2) # Get time difference between images
 print("differenza tra le foto in secondi: ", time_difference)
 
-image_1_cv, image_2_cv = convert_to_cv(image_1, image_2) # Create OpenCV image objects
-keypoints_1, keypoints_2, descriptors_1, descriptors_2 = calculate_features(image_1_cv, image_2_cv, 1000) # Get keypoints and descriptors
-matches = calculate_matches(descriptors_1, descriptors_2) # Match descriptors
-display_matches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches) # Display matches
+for i in range(4):
 
-'''
-l'algoritmo, quando esegue un'istruzione si ferma se ha bisogno di un input.
-display_matches attende la barra spaziatrice o un qualuque tasto per lasciare il controllo di flusso alle istruzioni successive
-'''
-coordinates_1, coordinates_2 = find_matching_coordinates(keypoints_1, keypoints_2, matches)
-print(coordinates_1[0], coordinates_2[0])
-average_feature_distance = calculate_mean_distance(coordinates_1, coordinates_2) 
-print("La distanza media rilevata è: ", average_feature_distance)
-speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
-print("La velocità media calcolata è: ",speed, "km/sec")
+    image_1_cv, image_2_cv = convert_to_cv(image_1, image_2) # Create OpenCV image objects
+    keypoints_1, keypoints_2, descriptors_1, descriptors_2 = calculate_features(image_1_cv, image_2_cv, 1000) # Get keypoints and descriptors
+    matches = calculate_matches(descriptors_1, descriptors_2) # Match descriptors
+    display_matches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches) # Display matches
 
+    '''
+    l'algoritmo, quando esegue un'istruzione si ferma se ha bisogno di un input.
+    display_matches attende la barra spaziatrice o un qualuque tasto per lasciare il controllo di flusso alle istruzioni successive
+    '''
+    coordinates_1, coordinates_2 = find_matching_coordinates(keypoints_1, keypoints_2, matches)
+    print(coordinates_1[0], coordinates_2[0])
+    average_feature_distance = calculate_mean_distance(coordinates_1, coordinates_2) 
+    print("La distanza media rilevata è: ", average_feature_distance)
+    speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
+#    print("La velocità media calcolata è: ",speed, "km/sec")
+    vel.append(speed)
+
+for i in vel:
+    print(i)
