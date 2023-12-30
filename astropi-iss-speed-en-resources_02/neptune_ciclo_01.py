@@ -4,16 +4,18 @@ import cv2 # modulo necessario per la computer vision
 import math # libreria di funzioni matematiche
 import os
 
-def Crop_image(image, percent):
-  width = image.shape[1]
-  height = image.shape[0]
+import csv
 
-  # Calcola le dimensioni del ritaglio.
-  crop_width = int(width * (percent))
-  crop_height = int(height * (percent))
- # Ritaglia l'immagine.
-  crop_image = image[crop_height:-crop_height, crop_width:-crop_width]  
-  return crop_image
+def Crop_image(image, percent):
+    width = image.shape[1]
+    height = image.shape[0]
+
+    # Calcola le dimensioni del ritaglio.
+    crop_width = int(width * (percent))
+    crop_height = int(height * (percent))
+    # Ritaglia l'immagine.
+    crop_image = image[crop_height:-crop_height, crop_width:-crop_width]  
+    return crop_image
 # get_time(image) preleva dai dati exif della singola foto la sua data di creazione
 def get_time(image):
     with open(image, 'rb') as image_file:   #apre in lettura un oggetto di tipo "image" e lo rinomina "image_file" 
@@ -81,8 +83,12 @@ con quelli della seconda immagine.
 # CALCULATE_MATCHES applica l'algoritmo bruce force ai descrittori delle due immagini
 def calculate_matches(descriptors_1, descriptors_2):
     brute_force = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    matches = brute_force.match(descriptors_1, descriptors_2)
-    matches = sorted(matches, key=lambda x: x.distance)
+    
+    try:
+        matches = brute_force.match(descriptors_1, descriptors_2)
+        matches = sorted(matches, key=lambda x: x.distance)
+    except:
+        matches = []
     return matches #restituisce una lista (anche molto lunga) di match.
 '''
 DISPLAY_MATCHES
@@ -140,18 +146,18 @@ def calculate_mean_distance(coordinates_1, coordinates_2):
     
     #aggiungiamo un ciclo for per scorrere le merged_coordinates e calcolare le differenze tra le coordinate xey in ciascuna immagine.
     for coordinate in merged_coordinates:
-            x_difference = coordinate[0][0] - coordinate[1][0]
-            y_difference = coordinate[0][1] - coordinate[1][1]
-            
-            # # La distanza tra i punti A e B è la lunghezza della linea c. Questa è chiamata ipotenusa del triangolo ABC.
-            # Usando il pacchetto math per calcolare il suo valore (hypot)
-            distance = math.hypot(x_difference, y_difference)
-            all_distances = all_distances + distance
-            
-            # Restituisce la distanza media tra gli elementi dividendo all_distances per il
-            # di corrispondenze di elementi, che è la lunghezza dell'elenco merged_coordinates.
-            return all_distances / len(merged_coordinates)
-    
+        x_difference = coordinate[0][0] - coordinate[1][0]
+        y_difference = coordinate[0][1] - coordinate[1][1]
+
+        # # La distanza tra i punti A e B è la lunghezza della linea c. Questa è chiamata ipotenusa del triangolo ABC.
+        # Usando il pacchetto math per calcolare il suo valore (hypot)
+        distance = math.hypot(x_difference, y_difference)
+        all_distances = all_distances + distance
+
+        # Restituisce la distanza media tra gli elementi dividendo all_distances per il
+        # di corrispondenze di elementi, che è la lunghezza dell'elenco merged_coordinates.
+        return all_distances / len(merged_coordinates)
+
 '''
 CALCULATE_SPEED_IN_KMPS
 calcola la velocità della ISS. Dovrebbe prendere feature_distance, un fattore GSD e time_difference come argomenti.
@@ -170,6 +176,7 @@ ALGORITMO PRINCIPALE
 dopo aver implementato tutte le funzioni si può implementare l'algoritmo principale che le userà secondo
 il flusso di lavoro scelto
 '''
+
 # scelgo le fotografie
 #image_1 = ('photo_01931.JPG')
 #image_2 = ('photo_01932.JPG')
@@ -198,17 +205,14 @@ for cartella, sottocartella, files in os.walk(os.getcwd()):
                 keypoints_1, keypoints_2, descriptors_1, descriptors_2 = calculate_features(crop_image_1, crop_image_2, 1000)
                 matches = calculate_matches(descriptors_1, descriptors_2) # Match descriptors
                 #display_matches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches)
-                display_matches(crop_image_1, keypoints_1, crop_image_2, keypoints_2, matches) # Display matches
-                '''
-                l'algoritmo, quando esegue un'istruzione si ferma se ha bisogno di un input.
-                display_matches attende la barra spaziatrice o un qualuque tasto per lasciare il controllo di flusso alle istruzioni successive
-                '''
-                coordinates_1, coordinates_2 = find_matching_coordinates(keypoints_1, keypoints_2, matches)
-                print('le coordinate sono',coordinates_1[0], coordinates_2[0])
-                average_feature_distance = calculate_mean_distance(coordinates_1, coordinates_2) 
-                print("La distanza media rilevata è: ", average_feature_distance)
-                speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
-                print("La velocità media calcolata è: ",speed, "km/sec")
+                if len(matches)!= 0: 
+                    display_matches(crop_image_1, keypoints_1, crop_image_2, keypoints_2, matches) # Display matches
+                    coordinates_1, coordinates_2 = find_matching_coordinates(keypoints_1, keypoints_2, matches)
+                    print('le coordinate sono',coordinates_1[0], coordinates_2[0])
+                    average_feature_distance = calculate_mean_distance(coordinates_1, coordinates_2) 
+                    print("La distanza media rilevata è: ", average_feature_distance)
+                    speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
+                    print("La velocità media calcolata è: ",speed, "km/sec")
             else:
                 pass
         else:
