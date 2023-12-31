@@ -1,3 +1,15 @@
+
+# Module for path of the CSV file
+from os import path
+import csv
+
+from exif import Image  # modulo utile all'uso delle informazioni nascoste nei file immagini
+from datetime import datetime # modulo utile alla manipolazione di date e orari
+import cv2 # modulo necessario per la computer vision
+import math # libreria di funzioni matematiche
+import os
+
+
 '''
 CREAZIONE E GESTIONE DEL CSV
 '''
