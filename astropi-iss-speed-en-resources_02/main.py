@@ -81,4 +81,8 @@ for cartella, sottocartella, files in os.walk(os.getcwd()):
 
 
 
+# Main code
+if __name__ == "__main__":
+    print("main.py - AstroPI 2023/2024")
 
+    main_function()
