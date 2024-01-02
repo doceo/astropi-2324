@@ -1,6 +1,5 @@
 
 # Module for path of the CSV file
-from os import path
 import csv
 
 from exif import Image  # modulo utile all'uso delle informazioni nascoste nei file immagini
@@ -15,7 +14,7 @@ CREAZIONE E GESTIONE DEL CSV
 '''
 
 def create_csv(data_file):
-    with open(data_file, "w") as f:
+    with open(data_file, "w", newline='') as f:
         writer = csv.writer(f)
         header = ("image-1", "image-2", "t-im1", "t-im2", "t-diff" "coord-1", "coord-2", "dist", "vel" )
         writer.writerow(header)

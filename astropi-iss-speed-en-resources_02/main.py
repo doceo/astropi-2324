@@ -1,5 +1,5 @@
 from utils import *
-
+from os import path
 
 def main_functions():
 
@@ -9,11 +9,6 @@ def main_functions():
     # Initialise the CSV file
     data_file = path.join(base_folder, "data.csv")
     create_csv(data_file)
-
-
-    # scelgo le fotografie
-    #image_1 = ('photo_01931.JPG')
-    #image_2 = ('photo_01932.JPG')ù
 
     for cartella, sottocartella, files in os.walk(os.getcwd()):
         print("\n"*3)
@@ -65,7 +60,9 @@ def main_functions():
                         speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
                         print("La velocità media calcolata è: ",speed, "km/sec")
                         row.append(speed)
-                        add_csv_data(data_file, row)
+                    print(row)    
+                    add_csv_data(data_file, row)
+                    row = []
 
                     
 
