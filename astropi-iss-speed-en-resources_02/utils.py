@@ -16,12 +16,12 @@ CREAZIONE E GESTIONE DEL CSV
 def create_csv(data_file):
     with open(data_file, "w", newline='') as f:
         writer = csv.writer(f)
-        header = ("image-1", "image-2", "t-im1", "t-im2", "t-diff" "coord-1", "coord-2", "dist", "vel" )
+        header = ("image-1", "image-2", "t-im1", "t-im2", "t-diff", "coord-1", "coord-2", "dist", "vel" )
         writer.writerow(header)
 
 def add_csv_data(data_file, data):
 
-    with open(data_file, "a+") as f:
+    with open(data_file, "a+", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(data)
 
@@ -62,7 +62,7 @@ def get_time_difference(crop_image_1, crop_image_2):
     time_difference = time_2 - time_1
     
     #time difference è un oggetto che ha tutte le cifre: ora, minuti e secondi.
-    print("la differenza temporale tra le due immagini e'", time_difference)
+    #print("la differenza temporale tra le due immagini e'", time_difference)
     #possiamo decidere di restiruire alla funzione chiamante solo i secondi, attraverso il metodo ".seconds"
     #dell'oggetto di tipo TIME.
     return time_difference.seconds

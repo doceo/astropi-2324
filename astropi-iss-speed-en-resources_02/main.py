@@ -9,9 +9,9 @@ def main_functions():
     # Initialise the CSV file
     data_file = path.join(base_folder, "data.csv")
     create_csv(data_file)
-
+    count = 0
     for cartella, sottocartella, files in os.walk(os.getcwd()):
-        print("\n"*3)
+        #print("\n"*3)
         for file in files:
             if file.endswith(".jpg"):
                 index = files.index(file)
@@ -23,8 +23,8 @@ def main_functions():
                     row.append(str(files[index+1]))
                     
                     
-                    print(image_1)
-                    print(image_2)
+                    #print(image_1)
+                    #print(image_2)
                     crop_image_1 = Crop_image(cv2.imread(image_1), 0.333)
                     crop_image_2 = Crop_image(cv2.imread(image_2), 0.333)
                     #prima viene richiamata la funzione get_image, il suo output viene stampato a monitor
@@ -32,13 +32,13 @@ def main_functions():
                     #cv2.imwrite("cropped_image_1.jpg", crop_image_1)
                     #cv2.imwrite("cropped_image_2.jpg", crop_image_2)
                     
-                    print(get_time(image_1))
+                    #print(get_time(image_1))
                     row.append(get_time(image_1))
-                    print(get_time(image_2))
+                    #print(get_time(image_2))
                     row.append(get_time(image_2))
                     
                     time_difference = get_time_difference(image_1, image_2) # Get time difference between images
-                    print("differenza tra le foto in secondi: ", time_difference)
+                    #print("differenza tra le foto in secondi: ", time_difference)
                     row.append(time_difference)
                     
                     #image_1_cv, image_2_cv = convert_to_cv(crop_image_1, crop_image_2) # Create OpenCV image objects
@@ -49,19 +49,21 @@ def main_functions():
                     if len(matches)!= 0: 
                         display_matches(crop_image_1, keypoints_1, crop_image_2, keypoints_2, matches) # Display matches
                         coordinates_1, coordinates_2 = find_matching_coordinates(keypoints_1, keypoints_2, matches)
-                        print('le coordinate sono',coordinates_1[0], coordinates_2[0])
+                        #print('le coordinate sono',coordinates_1[0], coordinates_2[0])
                         row.append(coordinates_1[0])
                         row.append(coordinates_2[0])
                         
                         average_feature_distance = calculate_mean_distance(coordinates_1, coordinates_2) 
-                        print("La distanza media rilevata è: ", average_feature_distance)
+                        #print("La distanza media rilevata è: ", average_feature_distance)
                         row.append(average_feature_distance)
                         
                         speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
-                        print("La velocità media calcolata è: ",speed, "km/sec")
+                        #print("La velocità media calcolata è: ",speed, "km/sec")
                         row.append(speed)
-                    print(row)    
-                    add_csv_data(data_file, row)
+                        print("dato: ",count)
+                        count+=1
+                        add_csv_data(data_file, row)
+                    print(row)
                     row = []
 
                     
