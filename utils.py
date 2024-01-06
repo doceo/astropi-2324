@@ -35,8 +35,8 @@ def Crop_image(img, percent):
     height = img.shape[0]
 
     # Calcola le dimensioni del ritaglio.
-    crop_width = int(width * (percent))
-    crop_height = int(height * (percent))
+    crop_width = int(width * (float (percent)))
+    crop_height = int(height * (float (percent)))
     # Ritaglia l'immagine.
     crop_image = img[crop_height:-crop_height, crop_width:-crop_width]  
     return crop_image
@@ -108,14 +108,14 @@ PRENDE come argomenti i due oggetti immagine OpenCV, i punti chiave e le corrisp
 def display_matches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches, count):
     
     # traccia delle linee tra i punti chiave in cui i descrittori corrispondono.
-    match_img = cv2.drawMatches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches[:100], None)
+    match_img = cv2.drawMatches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches[:200], None)
     
     # Le immagini possono ora essere ridimensionate e visualizzate, una accanto all'altra,
     # sullo schermo, con le linee tracciate tra le partite.
     resize = cv2.resize(match_img, (1600,600), interpolation = cv2.INTER_AREA)
     #cv2.imshow('matches', resize)
     name = "matches" + "-" + str(count) + ".jpg"
-    path = os.path.join("matches", name)
+    path = os.path.join("matches-test", name)
     print(path)
     cv2.imwrite(path, resize)
     # Per completare la funzione, lo script deve attendere finché non viene premuto un tasto, quindi chiudere l'immagine.
@@ -216,3 +216,4 @@ def grafico(file):
 
         # Salva il grafico come immagine jpg
         plt.savefig('grafico.jpg')
+
