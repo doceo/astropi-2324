@@ -17,7 +17,7 @@ CREAZIONE E GESTIONE DEL CSV
 
 def create_csv(data_file):
     with open(data_file, "w", newline='') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, delimiter=";")
         header = ("image-1", "image-2", "t-im1", "t-im2", "t-diff", "coord-1", "coord-2", "dist", "vel" )
         writer.writerow(header)
 

@@ -73,7 +73,10 @@ def main_functions():
                 
                     speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
                 #print("La velocità media calcolata è: ",speed, "km/sec")
-                    row.append(speed)
+                    
+                    speedS = str(speed)
+                    speedS = speedS.replace(".", ",")
+                    row.append(speedS)
                     add_csv_data(data_file, row)
                     saveImg += 1
         count += 1
